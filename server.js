@@ -30,7 +30,7 @@ app.get('/blog-posts', (req, res) => {
   res.json(BlogPosts.get());
 });
 
-//when this route is called, returned blog is updated with body
+//when this route is called, returned blog is updated with user changes
 app.post('/blog-posts', jsonParser, (req, res) => {
   const requiredFields =  ['title', 'content', 'author'];
   for(let i = 0; i<requiredFields.length; i++) {
@@ -44,10 +44,14 @@ app.post('/blog-posts', jsonParser, (req, res) => {
   res.status(201).json(item);
 });
 
-// app.delete('/blog-posts/:id', (req, res) => {
-//
-// });
-//
+//when this route is called, returned blog is updated to remove the item specified
+app.delete('/blog-posts/:id', (req, res) => {
+  BlogPosts.delete(req.params.id);
+  console.log(`Deleted blog ${req.params.id}`);
+  res.status(204).end();
+});
+
+// when route is called,
 // app.put('/blog-posts/:id', (req, res) => {
 //
 // });
