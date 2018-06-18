@@ -43,7 +43,7 @@ router.delete('/:id', (req, res) => {
   res.status(204).end();
 });
 
-// when route is called,
+// when route is called, the blog specified is updates with the new info
 router.put('/:id', jsonParser, (req, res) => {
   const requiredFields =  ['id', 'title', 'content', 'author'];
   for(let i = 0; i < requiredFields.length; i++) {
@@ -59,13 +59,15 @@ router.put('/:id', jsonParser, (req, res) => {
     return res.status(400).send(message);
   }
   console.log(`Updating blog post with blog id \`${req.params.id}\``);
-  BlogPosts.update({
+  let item = BlogPosts.update({
     id: req.params.id,
     title: req.body.title,
     content: req.body.content,
     author: req.body.author
-  });
-  res.status(204).json(item);
+  }
+
+);
+  res.status(200).json(item);
 });
 
 module.exports = router;
