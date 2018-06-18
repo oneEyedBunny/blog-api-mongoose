@@ -15,7 +15,6 @@ const {BlogPosts} = require('./models');
 const app = express();
 
 
-
 //log the http layer
 app.use(morgan('common'));
 
@@ -31,10 +30,20 @@ app.get('/blog-posts', (req, res) => {
   res.json(BlogPosts.get());
 });
 
-// app.post('/blog-posts', (req, res) => {
-//
-// });
-//
+//when this route is called, returned blog is updated with body
+app.post('/blog-posts', jsonParser, (req, res) => {
+  const requiredFields =  ['title', 'content', 'author'];
+  for(let i = 0; i<requiredFields.length; i++) {
+    if(!(requiredFields[i] in req.body)) {
+      const errorMessage = (`Missing \`${requiredFields[i]}\` in request body`);
+      console.error(errorMessage);
+      return res.status(400).send(errorMessage);
+    }
+  }
+  const item = BlogPosts.create(req.body.title, req.body.content, req.body.author)
+  res.status(201).json(item);
+});
+
 // app.delete('/blog-posts/:id', (req, res) => {
 //
 // });
