@@ -13,22 +13,22 @@ const should = chai.should();
 //lets us make http requests in our tests
 chai.use(chaiHttp);
 
-describe ('blogRouter', function() {
-
-  before(function() {
-    return runServer();
-  });
-
-  after(function() {
-    return closeServer();
-  });
-
-  //normal test case for GET route
-  it('should get the blog on GET request', function() {
-    return chai.request(app)
-    .get('/blog-posts')
-    .then(function(res) {
-
-    });
- })
-});
+// describe ('blogRouter', function() {
+//
+//   before(function() {
+//     return runServer();
+//   });
+//
+//   after(function() {
+//     return closeServer();
+//   });
+//
+//   //normal test case for GET route
+//   it('should get the blog on GET request', function() {
+//     return chai.request(app)
+//     .get('/blog-posts')
+//     .then(function(res) {
+//
+//     });
+//  })
+// });

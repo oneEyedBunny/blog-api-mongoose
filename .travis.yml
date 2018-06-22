@@ -1,2 +1,9 @@
 language: node_js
 node_js: node
+deploy:
+  provider: heroku
+  api_key:
+    secure: CpEIm+41RY9JKohNzr1SD05t2pZSBWimNwk7cbi4l8GbzMQ6PFbLcfF1mkxYxmKckTYkAvOMn7swTeUXt7tr6Wltml5MsjP3hrXNC3RUm8Vb2EedOn7qe0OWPShaoAs0ml3Ws9FSNN0Zl8yGip7n3USwO0lTUWN+LGz1gtVmo+/xdVkLGPIbNNm1aJYeKDFVIGYpkbthCKCEoIwlcw4tc4FiWnXCQv01PSkHMU3j7v3lurkn+HEdhU02zpCJ5QIk43/XK9QQfRZDundRsdnrzH6eCEW0mBsuUIRAwNB6hoYrGRoeQ6/6BYC4DDAQ5FP1mWDM+CKNpptuFXGhXxcZ0Qpq1CV3F6glko9PKTUnPTpdcO/IlctRz0IkZ+jdZIkBaVpZeg/7U3hnwNqWBcK/6BtTJUvg/iu2mCqGyzpX6xBtv6ZIlrox4nv1cJ13N3ENEBNE2yQ2y8o3BhkJ4F0WYPpoPXjDyUmSRwIrbYue10VOgUrVNirZOJbw0AEfZ7tgFK+tHYkthMofEa1tLOHoh2j0Fft7hrp/QzxVB2tEYBzYJrDNJUowtWPhOt6PRDlLh+l07UiJJQ4xHelWM/e2ZxhfycVLmO7d2wPTdqRSsrwFptU6+nuUVmWuTGeAY73AYERHKkT/UNDs8k0zgOjeud0BYgQmN8437eMIk/Nt9H4=
+  app: still-hamlet-27364
+  on:
+    repo: oneEyedBunny/blog-api
