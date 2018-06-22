@@ -4,7 +4,7 @@
   "description": "lesson 1.4.7",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --exist"
+    "test": "mocha --exit"
   },
   "author": "",
   "license": "ISC",
