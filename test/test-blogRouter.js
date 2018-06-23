@@ -4,7 +4,6 @@ const chaiHttp = require('chai-http');
 
 //import
 const {app, runServer, closeServer} = require('../server');
-const blogRouter = require('../blogRouter');
 
 //lets us use *expect & should* style syntax in tests
 const expect = chai.expect;
@@ -13,7 +12,7 @@ const should = chai.should();
 //lets us make http requests in our tests
 chai.use(chaiHttp);
 
-describe ('blogRouter', function() {
+describe ('Blog Router', function() {
 
   before(function() {
     return runServer();
@@ -29,7 +28,9 @@ describe ('blogRouter', function() {
     .get('/blog-posts')
     .then(function(res) {
       expect(res).to.be.json;
-      expect(res).to.be.object;
+      res.body.forEach(function(item) {
+        expect(item).to.have.all.keys('id', 'title', 'content', 'author', 'publishDate')
+      })
     });
  });
 

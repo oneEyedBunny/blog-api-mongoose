@@ -1,8 +1,5 @@
-'use strict'
-
 //importing 3rd party libraries
 const express = require('express');
-const router = express.Router();
 const morgan = require('morgan');
 
 // Modularize routes to /blog-posts
@@ -14,13 +11,16 @@ const app = express();
 //log the http layer
 app.use(morgan('common'));
 
-//routing for landing page
+app.use(express.json());
+
+//when requests come into the landing page, they get routed to the express router
 app.use('/blog-posts', blogRouter);
 
 
-app.listen(process.env.PORT || 8080, () => {
-  console.log(`Your app is listening on port ${process.env.PORT || 8080}`)
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
 });
+
 
 let server;
 
@@ -43,7 +43,6 @@ function runServer() {
 function closeServer() {
   return new Promise((resolve, reject) => {
     console.log('Closing server');
-    resolve(server);
     server.close(err => {
       if(err) {
         reject(err);
@@ -54,9 +53,9 @@ function closeServer() {
   });
 }
 
-//server is called directly (node server.js or nodemon), this will run
+//server is called directly (aka with node server.js or nodemon), this will run
 if(require.main === module) {
-  runServer().catch(err => console.log(err));
+  runServer().catch(err => console.error(err));
 }
 
 //exports so server can be run for use in test-blogRouter.js
