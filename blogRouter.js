@@ -59,7 +59,7 @@ router.put('/:id', jsonParser, (req, res) => {
     return res.status(400).send(message);
   }
   console.log(`Updating blog post with blog id \`${req.params.id}\``);
-  let item = BlogPosts.update({
+  BlogPosts.update({
     id: req.params.id,
     title: req.body.title,
     content: req.body.content,
