@@ -28,27 +28,45 @@ describe ('Blog Router', function() {
     .get('/blog-posts')
     .then(function(res) {
       expect(res).to.be.json;
+      expect(res.body).to.be.a('array');
+      expect(res.body.length).to.be.at.least(1);
       res.body.forEach(function(item) {
         expect(item).to.have.all.keys('id', 'title', 'content', 'author', 'publishDate')
       })
     });
  });
 
-//  //normal test case for POST route
-//  it('should get the blog on GET request', function() {
-//    return chai.request(app)
-//
-// });
+ //normal test case for POST route
+ it('should create a blog post on POST request', function() {
+   const newBlogPost = {title:'testblogpost', content:'testingtesting', author:"Tessy Tester", publishDate: 1529852206190}
+   return chai.request(app)
+   .post('/blog-posts')
+   .send(newBlogPost)
+   .then(function(res) {
+     expect(res).to.be.json;
+     expect(res).to.have.status(201);
+     expect(res.body).to.be.a('object');
+     expect(res.body).to.include.keys('id', 'title', 'content', 'author', 'publishDate');
+     expect(res.body).to.deep.equal(Object.assign(newBlogPost, {id:res.body.id}));
+   })
+
+});
+
 // //normal test case for DELETE route
-// it('should get the blog on GET request', function() {
+// it('should delete a specified blog post on DELETE request', function() {
 //   return chai.request(app)
 //
 // });
+
 // //normal test case for PUT route
-// it('should get the blog on GET request', function() {
+// it('should update a specified blog post on PUT request', function() {
 //   return chai.request(app)
 //
 // });
 
-
+//exception test cases for if request error route
+//GET =
+//POST = missing item = 400
+//Delete =
+//PUT= missing item = 400
 });
