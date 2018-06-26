@@ -57,7 +57,7 @@ describe ('Blog Router', function() {
     .get('/blog-posts')
     .then(function(res) {
       return chai.request(app)
-      .delete('/blog-posts/${res.body[0].id}');
+      .delete(`/blog-posts/${res.body[0].id}`);
     })
     .then(function(res) {
       expect(res).to.have.status(204);
@@ -69,6 +69,7 @@ describe ('Blog Router', function() {
     return chai.request(app)
     .get('/blog-posts')
     .then(function(res) {
+      console.log("my object before edit is", res.body[0]);
       const updatedBlogPost = Object.assign(res.body[0], {
         title:'testblogpost2',
         content:'testingtestingtesting',
@@ -76,7 +77,7 @@ describe ('Blog Router', function() {
         publishDate: 1529852206191
       });
       return chai.request(app)
-      .put('/blog-posts/${updatedBlogPost.id}')
+      .put(`/blog-posts/${updatedBlogPost.id}`)
       .send(updatedBlogPost)
       .then(function(res) {
         expect(res).to.have.status(200);

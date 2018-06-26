@@ -54,20 +54,20 @@ router.put('/:id', jsonParser, (req, res) => {
     }
   }
   if(req.params.id !== req.body.id) {
-    const message = `Request path id (${req.params.id}) and request body id (${req.body.id}) must match`;
-    console.error(message);
-    return res.status(400).send(message);
+    const errorMessage = (`Request path id (${req.params.id}) and request body
+      id (${req.body.id}) must match`);
+    console.error(errorMessage);
+    return res.status(400).send(errorMessage);
   }
   console.log(`Updating blog post with blog id \`${req.params.id}\``);
-  BlogPosts.update({
+  const updatedItem = BlogPosts.update({
     id: req.params.id,
     title: req.body.title,
     content: req.body.content,
     author: req.body.author
-  }
-
-);
-  res.status(200).json(item);
+  });
+  res.status(200).json(updatedItem);
+  console.log("my updated object is", updatedItem);
 });
 
 module.exports = router;
