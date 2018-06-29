@@ -1,28 +1,48 @@
-'use strict'
+"use strict";
 
 //importing 3rd party libraries
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
+const mongoose = require('mongoose');
+
+//Mongoose use built in es6 promises
+mongoose.Promise = global.Promise;
 
 // Modularize routes to /blog-posts
-const {BlogPosts} = require('./models');
+const {BlogPost} = require('./models');
 
-
-//Adding some blog post to test functionality
-BlogPosts.create("Cats are super", "BlahBlah1", "Cathy Caterson");
-BlogPosts.create("Dogs are great", "BlahBlah2", "Danny Doggery");
-BlogPosts.create("Bunnies are snuggly", "BlahBlah3", "Bonnie Bunyon");
-BlogPosts.create("Snakes are slithery", "BlahBlah4", "Seth Slitheran");
-
-
-//when this route is called, return the blog post
+//when the blog-posts route is called, return the blog post
 router.get('/', (req, res) => {
-  res.json(BlogPosts.get());
+  BlogPost
+    .find()
+    .then(blogPosts => {
+      res.json({
+        blogPosts: blogPosts.map(blogPost =>
+         blogPost.serialize()
+       )})
+    })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({error: "internal server error"});
+  });
 });
 
-//when this route is called, returned blog is updated with user changes
+//when a specific blog is called, return that blog post
+router.get('/:id', (req, res) => {
+  BlogPost
+    .findById(req.params.id)
+    .then(blogPost => {
+      res.json(blog.post.serialize()
+    )})
+    .catch(err => {
+    console.error(err);
+    res.status(500).json({error: "internatl server error"});
+  });
+});
+
+//when this route is called, returned blog is updated with changes
 router.post('/', jsonParser, (req, res) => {
   const requiredFields =  ['title', 'content', 'author'];
   for(let i = 0; i < requiredFields.length; i++) {
@@ -32,15 +52,31 @@ router.post('/', jsonParser, (req, res) => {
       return res.status(400).send(errorMessage);
     }
   }
-  const item = BlogPosts.create(req.body.title, req.body.content, req.body.author, req.body.publishDate)
-  res.status(201).json(item);
-});
+  BlogPost
+    .create({
+      title: req.body.title,
+      content: req.body.content,
+      author: req.body.author,
+      created: req.body.publishDate
+    })
+    .then(blogPost => res.status(201).json(blogPost.serialize()));
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({message: "Internal server error"})
+    })
+  });
 
 //when this route is called, returned blog is updated to remove the item specified
 router.delete('/:id', (req, res) => {
-  BlogPosts.delete(req.params.id);
-  console.log(`Deleted blog ${req.params.id}`);
-  res.status(204).end();
+  BlogPost
+  .findByIdRemove(req.params.id)
+  .then(blogPost => {
+    console.log(`Deleted blog ${req.params.id}`);
+    res.status(204).end();
+  })
+  .catch(err => {
+    res.status(500).json({message: "Internal server error"})
+  })
 });
 
 // when route is called, the blog specified is updates with the new info
@@ -59,15 +95,27 @@ router.put('/:id', jsonParser, (req, res) => {
     console.error(errorMessage);
     return res.status(400).send(errorMessage);
   }
-  console.log(`Updating blog post with blog id \`${req.params.id}\``);
-  const updatedItem = BlogPosts.update({
-    id: req.params.id,
-    title: req.body.title,
-    content: req.body.content,
-    author: req.body.author
+  const updatedPost= {};
+  const updatedableFields = ['title', 'content', 'author'];
+  updatedableFields.ForEach(field => {
+    if(field in req.body) {
+      updatedPost[field] = req.body[field];
+    }
   });
-  res.status(200).json(updatedItem);
-  console.log("my updated object is", updatedItem);
+  BlogPost
+    .findByIdAndUpdate(req.params.id, {$set: updatedPost})
+    .then(post => {
+      console.log(`Updating blog post with blog id \`${req.params.id}\``);
+      res.status(204).end()
+    )
+    .catch(err => {
+      res.status(500).json({message: "Something went wrong"});
+    })
 });
+
+//catch all in case user enters non-existent endpoint
+app.use("*", function(req, res) {
+  res.status(404).json({message: "Sorry, Not Found"});
+})
 
 module.exports = router;
