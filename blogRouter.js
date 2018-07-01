@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 //Mongoose use built in es6 promises
 mongoose.Promise = global.Promise;
 
-// Modularize routes to /blog-posts
+// Modularize routes to blog-posts
 const {BlogPost} = require('./models');
 
 //when the blog-posts route is called, return the blog post
@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
       res.json({
         blogPosts: blogPosts.map(blogPost =>
          blogPost.serialize()
-       )})
+       )});
     })
   .catch(err => {
     console.error(err);
@@ -34,11 +34,11 @@ router.get('/:id', (req, res) => {
   BlogPost
     .findById(req.params.id)
     .then(blogPost => {
-      res.json(blog.post.serialize()
+      res.json(blogPost.serialize()
     )})
     .catch(err => {
     console.error(err);
-    res.status(500).json({error: "internatl server error"});
+    res.status(500).json({error: "internal server error"});
   });
 });
 
@@ -59,17 +59,18 @@ router.post('/', jsonParser, (req, res) => {
       author: req.body.author,
       created: req.body.publishDate
     })
-    .then(blogPost => res.status(201).json(blogPost.serialize()));
+    .then(blogPost => {res.status(201).json(blogPost.serialize())
+    })
     .catch(err => {
       console.error(err);
       res.status(500).json({message: "Internal server error"})
-    })
+    });
   });
 
 //when this route is called, returned blog is updated to remove the item specified
 router.delete('/:id', (req, res) => {
   BlogPost
-  .findByIdRemove(req.params.id)
+  .findByIdAndRemove(req.params.id)
   .then(blogPost => {
     console.log(`Deleted blog ${req.params.id}`);
     res.status(204).end();
@@ -81,7 +82,7 @@ router.delete('/:id', (req, res) => {
 
 // when route is called, the blog specified is updates with the new info
 router.put('/:id', jsonParser, (req, res) => {
-  const requiredFields =  ['id', 'title', 'content', 'author'];
+  const requiredFields =  ['title', 'content', 'author'];
   for(let i = 0; i < requiredFields.length; i++) {
     if(!(requiredFields[i] in req.body)) {
       const errorMessage = (`Missing \`${requiredFields[i]}\` in request body`);
@@ -97,7 +98,7 @@ router.put('/:id', jsonParser, (req, res) => {
   }
   const updatedPost= {};
   const updatedableFields = ['title', 'content', 'author'];
-  updatedableFields.ForEach(field => {
+  updatedableFields.forEach(field => {
     if(field in req.body) {
       updatedPost[field] = req.body[field];
     }
@@ -107,14 +108,14 @@ router.put('/:id', jsonParser, (req, res) => {
     .then(post => {
       console.log(`Updating blog post with blog id \`${req.params.id}\``);
       res.status(204).end()
-    )
+    })
     .catch(err => {
       res.status(500).json({message: "Something went wrong"});
     })
 });
 
 //catch all in case user enters non-existent endpoint
-app.use("*", function(req, res) {
+router.use("*", function(req, res) {
   res.status(404).json({message: "Sorry, Not Found"});
 })
 

@@ -34,8 +34,10 @@ blogPostSchema.methods.serialize = function() {
   };
 };
 
-//Creates a new Mongoose model (BlogPosts) that uses the Schema defined above
+//Creates a new Mongoose model (BlogPost) that uses the Schema defined above
 const BlogPost = mongoose.model('BlogPost', blogPostSchema);
+
+module.exports = {BlogPost};
 
 // const BlogPosts = {
 //   create: function(title, content, author, publishDate) {
@@ -89,6 +91,3 @@ const BlogPost = mongoose.model('BlogPost', blogPostSchema);
 //   storage.posts = [];
 //   return storage;
 // }
-
-
-module.exports = {BlogPost};
