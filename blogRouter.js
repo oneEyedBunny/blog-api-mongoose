@@ -10,10 +10,10 @@ const mongoose = require('mongoose');
 //Mongoose use built in es6 promises
 mongoose.Promise = global.Promise;
 
-// Modularize routes to blog-posts
+// Modularize routes to blogs
 const {BlogPost} = require('./models');
 
-//when the blog-posts route is called, return the blog post
+//when the blogs route is called, return the blog post
 router.get('/', (req, res) => {
   BlogPost
     .find()

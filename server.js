@@ -21,12 +21,12 @@ app.use(express.json());
 app.use(morgan('common'));
 
 //when requests come into the landing page, they get routed to the express router
-app.use('/blog-posts', blogRouter);
+app.use('/blogs', blogRouter);
 
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
-});
+// app.get("/", (req, res) => {
+//   res.sendFile(__dirname + "/index.html");
+// });
 
 
 let server;
