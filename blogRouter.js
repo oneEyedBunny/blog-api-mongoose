@@ -57,7 +57,7 @@ router.post('/', jsonParser, (req, res) => {
       title: req.body.title,
       content: req.body.content,
       author: req.body.author,
-      created: req.body.publishDate
+      created: req.body.created
     })
     .then(blogPost => {res.status(201).json(blogPost.serialize())
     })
