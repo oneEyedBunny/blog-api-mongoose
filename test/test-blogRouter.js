@@ -141,19 +141,26 @@ describe ('Blog Router', function() {
   });
 });//closes post endpoint test
 
-  // //normal test case for DELETE route
-  // it('should delete a specified blog post on DELETE request', function() {
-  //   return chai.request(app)
-  //   .get('/blogs')
-  //   .then(function(res) {
-  //     return chai.request(app)
-  //     .delete(`/blog-posts/${res.body[0].id}`);
-  //   })
-  //   .then(function(res) {
-  //     expect(res).to.have.status(204);
-  //   });
-  // });
-  //
+  //normal test case for DELETE route
+  describe('DELETE endpoints', function() {
+  it('should delete a specified blog post', function() {
+    let selectedBlog;
+    return BlogPost.findOne()
+    .then(function(_selectedBlog) {
+      selectedBlog = _selectedBlog;
+      return chai.request(app)
+      .delete(`/blogs/${selectedBlog.id}`);
+    })
+    .then(function(res) {
+      expect(res).to.have.status(204);
+      return BlogPost.findById(selectedBlog.id);
+    })
+      .then(function(_blog) {
+          expect(_blog).to.be.null;
+      });
+  });
+ }); //closes delete tests
+
   // //normal test case for PUT route
   // it('should update a specified blog post on PUT request', function() {
   //   return chai.request(app)
