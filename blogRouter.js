@@ -3,8 +3,8 @@
 //importing 3rd party libraries
 const express = require('express');
 const router = express.Router();
-const bodyParser = require('body-parser');
-const jsonParser = bodyParser.json();
+// const bodyParser = require('body-parser');
+// const jsonParser = bodyParser.json();
 const mongoose = require('mongoose');
 
 //Mongoose use built in es6 promises
@@ -43,7 +43,7 @@ router.get('/:id', (req, res) => {
 });
 
 //when this route is called, returned blog is updated with changes
-router.post('/', jsonParser, (req, res) => {
+router.post('/', (req, res) => {
   const requiredFields =  ['title', 'content', 'author'];
   for(let i = 0; i < requiredFields.length; i++) {
     if(!(requiredFields[i] in req.body)) {
@@ -81,7 +81,7 @@ router.delete('/:id', (req, res) => {
 });
 
 // when route is called, the blog specified is updates with the new info
-router.put('/:id', jsonParser, (req, res) => {
+router.put('/:id', (req, res) => {
   const requiredFields =  ['title', 'content', 'author'];
   for(let i = 0; i < requiredFields.length; i++) {
     if(!(requiredFields[i] in req.body)) {
