@@ -1,6 +1,10 @@
+'use strict';
+
 //import dependencies
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const faker = require('faker');
+const mongoose = require('mongoose');
 
 //import
 const {app, runServer, closeServer} = require('../server');
