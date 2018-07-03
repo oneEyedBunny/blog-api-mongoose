@@ -15,7 +15,7 @@ const {PORT, DATABASE_URL} = require('./config');
 
 //creates the new express app, no need to server up static assets as there are none
 const app = express();
-app.use(express.json());
+app.use(express.json()); //subs for bodyParser
 
 //log the http layer
 app.use(morgan('common'));
@@ -41,7 +41,7 @@ function runServer(databaseURL, port = PORT) {
         }
         server = app
         .listen(port, () => {
-          console.log('Your app is listening on port ${port}');
+          console.log(`Your app is listening on port ${port}`);
           resolve();
         })
         .on("error", err => {

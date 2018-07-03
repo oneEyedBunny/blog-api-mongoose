@@ -3,8 +3,6 @@
 //importing 3rd party libraries
 const express = require('express');
 const router = express.Router();
-// const bodyParser = require('body-parser');
-// const jsonParser = bodyParser.json();
 const mongoose = require('mongoose');
 
 //Mongoose use built in es6 promises
